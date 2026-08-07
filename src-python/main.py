@@ -114,7 +114,7 @@ def get_resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
-def upscale_frames(frames_dir, output_frames_dir, scale, model_type):
+def upscale_frames(frames_dir, output_frames_dir, scale, model_type, model_family=None, model_name=None, model_path=None):
     os.makedirs(output_frames_dir, exist_ok=True)
     frame_files = sorted(os.listdir(frames_dir))
     total = len(frame_files)
@@ -124,16 +124,21 @@ def upscale_frames(frames_dir, output_frames_dir, scale, model_type):
     
     # Determine which binary to use
     upscaler_cwd = None
-    if "cugan" in model_type:
+    family = model_family or ("realcugan" if "cugan" in model_type else "realesrgan")
+    if family == "realcugan":
         upscaler_exe = get_resource_path(os.path.join("realcugan", "realcugan-ncnn-vulkan.exe"))
         upscaler_cwd = get_resource_path("realcugan")
 
         # Real-CUGAN models are in subfolders like models-se, models-pro, models-nose
-        model_name = "models-se" # Default
-        if "pro" in model_type:
-            model_name = "models-pro"
-        elif "nose" in model_type:
-            model_name = "models-nose"
+        selected_model = model_path
+        if not selected_model:
+            selected_model = "models-se" # Default
+            if "pro" in model_type:
+                selected_model = "models-pro"
+            elif "nose" in model_type:
+                selected_model = "models-nose"
+        if model_path:
+            upscaler_cwd = os.path.dirname(model_path)
 
         # Pass model_name as relative path; cwd is set to realcugan dir so binary resolves it correctly
         cmd = [
@@ -141,7 +146,7 @@ def upscale_frames(frames_dir, output_frames_dir, scale, model_type):
             "-i", frames_dir,
             "-o", output_frames_dir,
             "-s", str(scale),
-            "-m", model_name,
+            "-m", selected_model,
             "-f", "jpg"
         ]
     else:
@@ -154,8 +159,8 @@ def upscale_frames(frames_dir, output_frames_dir, scale, model_type):
             "-i", frames_dir,
             "-o", output_frames_dir,
             "-s", str(scale),
-            "-n", model_type,
-            "-m", models_path,
+            "-n", model_name or model_type,
+            "-m", model_path or models_path,
             "-f", "jpg" # Output format
         ]
 
@@ -274,6 +279,9 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--scale", type=int, default=2)
     parser.add_argument("--model", default="realesrgan-x4plus")
+    parser.add_argument("--model-family", default=None)
+    parser.add_argument("--model-name", default=None)
+    parser.add_argument("--model-path", default=None)
     parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument("--ffprobe", default="ffprobe")
     
@@ -293,7 +301,15 @@ def main():
         if actual_total > 0:
             total_frames = actual_total
             
-        upscale_frames(frames_dir, output_frames_dir, args.scale, args.model)
+        upscale_frames(
+            frames_dir,
+            output_frames_dir,
+            args.scale,
+            args.model,
+            args.model_family,
+            args.model_name,
+            args.model_path,
+        )
         merge_frames(output_frames_dir, args.input, args.output, total_frames)
         log_progress(100, 100, "Done!")
     except Exception as e:
