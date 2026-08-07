@@ -22,6 +22,18 @@ const resources = {
       "upscaling": "업스케일링 중",
       "merging": "병합 중...",
       "extracting": "프레임 추출 중..."
+      ,"manage_models": "모델 관리"
+      ,"model_manager_hint": "기본 모델을 확인하거나 나만의 모델 폴더를 추가하세요."
+      ,"included": "기본 제공"
+      ,"custom": "사용자 추가"
+      ,"delete_model": "모델 삭제"
+      ,"add_model": "모델 폴더 추가"
+      ,"add_model_hint": ".param과 .bin 파일이 함께 있는 폴더를 선택하세요."
+      ,"choose_model_folder": "폴더 선택"
+      ,"custom_models_count": "개의 사용자 모델"
+      ,"model_import_failed": "모델 추가 실패"
+      ,"browse_error": "파일 선택 실패"
+      ,"select_video_error": "먼저 비디오와 모델을 선택해 주세요"
     }
   },
   en: {
@@ -43,6 +55,18 @@ const resources = {
       "upscaling": "Upscaling",
       "merging": "Merging...",
       "extracting": "Extracting frames..."
+      ,"manage_models": "Manage models"
+      ,"model_manager_hint": "Review included models or add your own model folder."
+      ,"included": "Included"
+      ,"custom": "Custom"
+      ,"delete_model": "Delete model"
+      ,"add_model": "Add model folder"
+      ,"add_model_hint": "Choose a folder containing matching .param and .bin files."
+      ,"choose_model_folder": "Choose folder"
+      ,"custom_models_count": "custom models"
+      ,"model_import_failed": "Model import failed"
+      ,"browse_error": "File selection failed"
+      ,"select_video_error": "Select a video and model first"
     }
   },
   ja: {
@@ -64,6 +88,18 @@ const resources = {
       "upscaling": "アップスケール中",
       "merging": "結合中...",
       "extracting": "フレーム抽出中..."
+      ,"manage_models": "モデル管理"
+      ,"model_manager_hint": "標準モデルを確認するか、自分のモデルフォルダを追加してください。"
+      ,"included": "標準搭載"
+      ,"custom": "追加済み"
+      ,"delete_model": "モデルを削除"
+      ,"add_model": "モデルフォルダを追加"
+      ,"add_model_hint": ".param と .bin ファイルが入ったフォルダを選択してください。"
+      ,"choose_model_folder": "フォルダを選択"
+      ,"custom_models_count": "個のカスタムモデル"
+      ,"model_import_failed": "モデルの追加に失敗しました"
+      ,"browse_error": "ファイル選択に失敗しました"
+      ,"select_video_error": "動画とモデルを先に選択してください"
     }
   }
 };
